@@ -14,7 +14,11 @@
 
 //! This module implements node maintenance actions.
 
-use std::{collections::HashMap, path::{Path, PathBuf}, str::FromStr};
+// use std::{collections::HashMap, path::{Path, PathBuf}, str::FromStr};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 use super::{
     internal::{CollectedCommand, Command, Feedback},
@@ -44,7 +48,7 @@ const SERVICE_KEY_PASS_METHOD: &str = "SERVICE_KEY_PASS_METHOD";
 pub struct Maintenance;
 
 impl Maintenance {
-    fn node_config(ctx: &Context) -> NodeConfig {
+    fn node_config(ctx: &Context) -> NodeConfig<PathBuf> {
         let path = ctx
             .arg::<String>(NODE_CONFIG_PATH)
             .unwrap_or_else(|_| panic!("{} not found.", NODE_CONFIG_PATH));

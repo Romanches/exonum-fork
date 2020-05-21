@@ -56,11 +56,7 @@ pub struct TransactionMessage {
 }
 impl ::std::fmt::Debug for TransactionMessage {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> Result<(), ::std::fmt::Error> {
-        let mut signed_message_debug = String::new();
-        self.message
-            .signed_message()
-            .write_hex(&mut signed_message_debug)?;
-
+        let signed_message_debug = self.message.signed_message().encode_hex::<String>();
         let mut debug = fmt.debug_struct("TransactionMessage");
         debug.field("service_id", &self.service_id);
         debug.field("message", &signed_message_debug);
@@ -479,7 +475,7 @@ fn panic_description(any: &Box<dyn Any + Send>) -> Option<String> {
     } else if let Some(s) = any.downcast_ref::<String>() {
         Some(s.clone())
     } else if let Some(error) = any.downcast_ref::<Box<dyn Error + Send>>() {
-        Some(error.description().to_string())
+        Some(error.to_string())
     } else {
         None
     }
@@ -679,7 +675,7 @@ mod tests {
     #[test]
     fn box_error_panic() {
         let error: Box<dyn Error + Send> = Box::new("e".parse::<i32>().unwrap_err());
-        let description = error.description().to_owned();
+        let description = error.to_string();
         let error = make_panic(error);
         assert_eq!(Some(description), panic_description(&error));
     }
