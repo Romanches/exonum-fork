@@ -52,33 +52,7 @@ impl Maintenance {
         let path = ctx
             .arg::<String>(NODE_CONFIG_PATH)
             .unwrap_or_else(|_| panic!("{} not found.", NODE_CONFIG_PATH));
-        let run_config: NodeConfig<PathBuf> = ConfigFile::load(path.clone()).expect("Can't load node config file");
-
-        let consensus_passphrase = {
-            let consensus_pass_method = ctx
-                .arg::<String>(CONSENSUS_KEY_PASS_METHOD)
-                .unwrap_or_else(|_| panic!("{} not found.", NODE_CONFIG_PATH));
-
-            PassInputMethod::from_str(&consensus_pass_method)
-                .expect("Incorrect passphrase input method for consensus key.")
-                .get_passphrase(SecretKeyType::Consensus, true)
-        };
-
-        let service_passphrase = {
-            let service_pass_method = ctx
-                .arg::<String>(SERVICE_KEY_PASS_METHOD)
-                .unwrap_or_else(|_| panic!("{} not found.", NODE_CONFIG_PATH));
-
-            PassInputMethod::from_str(&service_pass_method)
-                .expect("Incorrect passphrase input method for service key.")
-                .get_passphrase(SecretKeyType::Service, true)
-        };
-
-        run_config.read_secret_keys(
-            &path,
-            consensus_passphrase.as_bytes(),
-            service_passphrase.as_bytes(),
-        )
+        ConfigFile::load(path).expect("Can't load node config file")
     }
 
     fn database(ctx: &Context, options: &DbOptions) -> Box<dyn Database> {
