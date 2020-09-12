@@ -34,7 +34,7 @@
     "protobufjs": "^6.8.8",
     "vue": "^2.6.10",
     "vue-router": "^3.0.6",
-    "yargs-parser": "^13.1.1"
+    "yargs-parser": "^13.1.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.5.5",
